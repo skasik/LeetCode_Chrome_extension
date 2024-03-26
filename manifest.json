@@ -1,0 +1,30 @@
+{
+    "manifest_version": 3,
+    "name": "LeetCode Utility",
+    "version": "1.0",
+    "description": "Track Rank & more",
+    "permissions": [
+        "activeTab"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "icons": {
+        "16": "icon.png",
+        "48": "icon.png",
+        "128": "icon.png"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://leetcode.com/*", "https://www.leetcode.com/*"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ]
+}
