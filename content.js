@@ -47,12 +47,47 @@ function addRank(){
                 }
                 window.localStorage.setItem(username + "_ranks", JSON.stringify(prevRanks));
                 window.localStorage.setItem(username + "_rankdates", JSON.stringify(prevRankDates));
+                displayChart(prevRanks,prevRankDates);
             }
         })
     }
     else console.log("This is not your leetcode profile! ");
 }
 
+function displayChart(ranks,dates){
+    document.querySelectorAll("span").forEach(ele=>{
+        if(ele.innerText.includes("submissions in the past one year")){
+            let parent = ele.parentNode.parentNode.parentNode.parentNode;
+            let ctx = document.createElement("canvas");
+            ctx.width = parent.width;
+            ctx.height = "300";
+            let isDark = document.querySelector('html').classList.contains("dark");
+            ctx.style.background = isDark?"#282828":"white";
+            ctx.style.marginTop = "1rem";
+            new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                      labels: dates,
+                      datasets: [{
+                        label: 'Rank #',
+                        data: ranks,
+                        borderWidth: 3,
+                        borderColor: "#ffa116"
+                      }]
+                    },
+                    options: {
+                      scales: {
+                        y: {
+                          beginAtZero: true
+                        }
+                      }
+                    }
+            });
+        parent.appendChild(ctx);
+        }
+    });
+}
+
 setTimeout(()=>{
     addRank();
-}, 5000);
+}, 4000);
