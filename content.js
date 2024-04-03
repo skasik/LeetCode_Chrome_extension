@@ -90,6 +90,41 @@ function displayChart(ranks,dates){
     });
 }
 
+function toggleTimer(start=true){
+    if (window.location.href.includes("https://leetcode.com/problems/")){
+        try{
+            document.querySelector('#ide-top-btns > div > div > div > div:nth-child(2) > div').click();
+            let status = document.querySelector('#ide-top-btns > div > div > div > div:nth-child(1) > div > div:nth-child(2) > div> div > svg').getAttribute('data-icon');
+            console.log(status, start, status.includes("play"), status.includes("pause"));
+            var problemId = window.location.href.replace("https://leetcode.com/problems/","").split("/")[0];
+            if (!window.localStorage.getItem(problemId+"_status")){
+                document.querySelector('#ide-top-btns > div > div > div > div:nth-child(1) > div > div:nth-child(4)').click(); //reset timer
+                window.localStorage.setItem(problemId+"_status", "NA");
+            }
+            if (window.location.href.includes('/submissions/') && document.querySelector('span[data-e2e-locator="submission-result"]').innerText.includes("Accepted")){
+                window.localStorage.setItem(problemId+"_status", "AC");
+            }
+            if (window.localStorage.getItem(problemId+"_status") == "AC"){
+                start = false;
+            }
+            if (start && status.includes("play")) {
+                document.querySelector('#ide-top-btns > div > div > div > div:nth-child(1) > div > div:nth-child(2) > div').click()
+            }
+            else if (!start && status.includes("pause")){
+                document.querySelector('#ide-top-btns > div > div > div > div:nth-child(1) > div > div:nth-child(2) > div').click()
+            }
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
+}
+
 setTimeout(()=>{
     addRank();
 }, 4000);
+
+setInterval(()=>{
+    // console.log("-->", document.hasFocus())
+    toggleTimer(document.hasFocus());
+},1000);
