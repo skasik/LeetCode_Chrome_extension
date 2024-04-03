@@ -13,11 +13,13 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             prevRanks = JSON.parse(window.localStorage.getItem(username + "_ranks") || "[]");
             prevRankDates = JSON.parse(window.localStorage.getItem(username + "_rankdates") || "[]");
         }
+        // alert(window.location.href)
         sendResponse({
             username:
                 window.localStorage.getItem("leetcode_username"),
             rankHistory: prevRanks,
-            rankDateHistory: prevRankDates
+            rankDateHistory: prevRankDates,
+            success: window.location.href.includes("https://leetcode.com/")
         });
     }
 });

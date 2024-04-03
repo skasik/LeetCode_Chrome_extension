@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="popup.css">
-</head>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
 
-<body>
-    <p>Your Username?</p>
-    <input id="username" placeholder="Enter your username" />
-    <button id="tracker_btn">Track this username!</button>
-    <div id="my_ranks">
-        <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+  <body>
+    <div id="content" class="hide">
+      <p>Your Username?</p>
+      <input id="username" placeholder="Enter your username" />
+      <button id="tracker_btn">Track this username!</button>
+      <div id="my_ranks">
+        <canvas id="myChart" style="width: 100%; max-width: 700px"></canvas>
+      </div>
+    </div>
+    <div id="error">
+        <p>This extension works only on leetcode.com</p>
     </div>
     <script src="chart.js"></script>
     <script src="popup.js"></script>
-</body>
-
+  </body>
 </html>

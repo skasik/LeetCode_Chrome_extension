@@ -1,21 +1,34 @@
 body {
-    width: 20rem;
-    height: auto;
-    padding-bottom: 5rem;
-    padding-top: 5rem;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
+  width: 20rem;
+  height: auto;
+  padding-bottom: 5rem;
+  padding-top: 5rem;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
 }
 
 p {
-    font-size: 1rem;
-    font-weight: bold;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+#content,
+#error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hide {
+  display: none !important;
 }
 
 #username {
-    /* width: 20rem;
+  /* width: 20rem;
     height: auto;
     padding-bottom: 5rem;
     padding-top: 5rem;
@@ -25,30 +38,30 @@ p {
     flex-direction: column;
     border-radius: 40rem;
     */
-    height: auto;
-    /* padding-bottom: 5rem; */
-    /* padding-top: 5rem; */
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
-    border-radius: 5px;
-    border: solid 1px black;
-    padding: 0.2rem 1rem;
+  height: auto;
+  /* padding-bottom: 5rem; */
+  /* padding-top: 5rem; */
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  border: solid 1px black;
+  padding: 0.2rem 1rem;
 }
 
 #tracker_btn {
-    background: #4CAF50;
-    border: none;
-    outline: none;
-    padding: 0.5rem 3rem;
-    border-radius: 10rem;
-    margin-top: 1rem;
-    color: white;
-    cursor: pointer;
+  background: #4caf50;
+  border: none;
+  outline: none;
+  padding: 0.5rem 3rem;
+  border-radius: 10rem;
+  margin-top: 1rem;
+  color: white;
+  cursor: pointer;
 }
 
-#my_ranks{
-    display: flex;
-    flex-direction: column;
+#my_ranks {
+  display: flex;
+  flex-direction: column;
 }

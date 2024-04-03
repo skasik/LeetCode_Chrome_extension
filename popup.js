@@ -13,12 +13,12 @@ document.addEventListener('DOMContentLoaded', function () {
         chrome.tabs.sendMessage(tabs[0].id, {
             action: 'get_username'
         }, function(resp){
+          if (resp.success) {
+            document.getElementById("content").classList.remove("hide");
+            document.getElementById("error").classList.add("hide");
+
             document.getElementById("username").value = resp.username;
-            // resp.rankHistory.forEach(element => {
-            //     var el = document.createElement("span");
-            //     el.innerText = element;
-            //     document.getElementById("my_ranks").appendChild(el);
-            // });
+
             if (resp.rankHistory.length > 0){
                 const ctx = document.getElementById('myChart');
                 new Chart(ctx, {
@@ -39,21 +39,12 @@ document.addEventListener('DOMContentLoaded', function () {
                       }
                     }
                   });
-                // new Chart("myChart", {
-                //     type: "line",
-                //     data: {
-                //         labels: resp.rankDateHistory,
-                //         datasets: [{
-                //             backgroundColor: "rgba(0,0,255,1.0)",
-                //             borderColor: "rgba(0,0,255,0.1)",
-                //             data: resp.rankHistory
-                //         }]
-                //     },
-                //     options: {
-                //         legend: {display: false}
-                //     }
-                // });
             }
+          }
+          else{
+            document.getElementById("content").classList.add("hide");
+            document.getElementById("error").classList.remove("hide");
+          }
         });
     });
 });
