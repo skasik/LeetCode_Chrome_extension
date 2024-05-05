@@ -19,7 +19,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 window.localStorage.getItem("leetcode_username"),
             rankHistory: prevRanks,
             rankDateHistory: prevRankDates,
-            success: window.location.href.includes("https://leetcode.com/u/")
+            success: window.location.href.includes("https://leetcode.com/")
         });
     }
 });
