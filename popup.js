@@ -19,27 +19,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
             document.getElementById("username").value = resp.username;
 
-            if (resp.rankHistory.length > 0){
-                const ctx = document.getElementById('myChart');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                      labels: resp.rankDateHistory,
-                      datasets: [{
-                        label: 'Rank #',
-                        data: resp.rankHistory,
-                        borderWidth: 1
-                      }]
-                    },
-                    options: {
-                      scales: {
-                        y: {
-                          beginAtZero: true
-                        }
-                      }
-                    }
-                  });
-            }
+            // if (resp.rankHistory.length > 0){
+            //     const ctx = document.getElementById('myChart');
+            //     new Chart(ctx, {
+            //         type: 'line',
+            //         data: {
+            //           labels: resp.rankDateHistory,
+            //           datasets: [{
+            //             label: 'Rank #',
+            //             data: resp.rankHistory,
+            //             borderWidth: 1
+            //           }]
+            //         },
+            //         options: {
+            //           scales: {
+            //             y: {
+            //               beginAtZero: true
+            //             }
+            //           }
+            //         }
+            //       });
+            // }
           }
           else{
             document.getElementById("content").classList.add("hide");

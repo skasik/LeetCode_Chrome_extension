@@ -59,22 +59,75 @@ function addRank(){
 function displayChart(ranks,dates){
     document.querySelectorAll("span").forEach(ele=>{
         if(ele.innerText.includes("submissions in the past one year")){
+            // let xAxis = [];
+            // let yAxis = [];
+            // //set xAxis to month names of last 12 months
+            // for (let i=11; i>=0; i--){
+            //     let today = new Date();
+            //     today.setMonth(today.getMonth()-i);
+            //     xAxis.push(today.toLocaleString('default', { month: 'short' }));
+            // }
+            
+            // //calculate yAxis values by averaging ranks of each month
+            // let j = 0;
+            // for (let t=0; t<12; ++t){
+            //     let mth = (new Date()).getMonth() - t;
+
+
+            // }
+            let points = {};
+            for (let i=0; i<12; ++i){ points[i] = {rank:0, count:0};}
+            for (let i=0; i<dates.length; ++i){
+                let date = new Date(dates[i].split("/").reverse().join("-"));
+                let mth = date.getMonth();
+                points[mth].rank += ranks[i];
+                points[mth].count += 1;
+            }
+
+            let xAxis = [];
+            let yAxis = [];
+            for (let i=11; i>-1; --i){
+                let mth = (new Date()).getMonth() - i;
+                if (mth < 0) mth += 12;
+                xAxis.push((new Date(
+                    (new Date()).getFullYear(),
+                    mth,
+                    1
+                )).toLocaleString('default', { month: 'short', month: 'short' }));
+                yAxis.push(points[mth].rank/points[mth].count);
+            }
+            for (let i = 11; i>=0; --i){
+                if (isNaN(yAxis[i])){
+                    yAxis[i] = (yAxis[i+1] + yAxis[i-1])/2;
+                    if (isNaN(yAxis[i])){
+                        yAxis[i] = yAxis[i+1];
+                    }
+                }
+                yAxis[i] = Math.round(yAxis[i]);
+            }
+            // console.log(xAxis, yAxis);
+
             let parent = ele.parentNode.parentNode.parentNode.parentNode;
             let ctx = document.createElement("canvas");
-            ctx.width = parent.width;
+            ctx.width = "800";
             ctx.height = "300";
             let isDark = document.querySelector('html').classList.contains("dark");
             ctx.style.background = isDark?"#282828":"white";
             ctx.style.marginTop = "1rem";
+            ctx.style.borderRadius = "0.5rem";
+            Chart.defaults.color = isDark?"#fff":"#000";
             new Chart(ctx, {
                     type: 'line',
                     data: {
-                      labels: dates,
+                      labels: xAxis,
                       datasets: [{
                         label: 'Rank #',
-                        data: ranks,
+                        data: yAxis,
                         borderWidth: 3,
-                        borderColor: "#ffa116"
+                        borderColor: "#ffa116",
+                        pointRadius: 3,
+                        // pointStyle: false,
+                        cubicInterpolationMode: 'monotone',
                       }]
                     },
                     options: {
@@ -82,8 +135,39 @@ function displayChart(ranks,dates){
                         y: {
                           beginAtZero: true
                         }
-                      }
-                    }
+                      },
+                      tension: 0.3,
+                      plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: ({ label, formattedValue }) => formattedValue,
+                                title: (raw) => raw[0].label,
+                                labelColor: function(context) {
+                                    return {
+                                        borderColor: '#00000000',
+                                        backgroundColor: '#00000000',
+                                        borderWidth: 0,
+                                        borderDash: [0,0],
+                                        borderRadius: 10,
+                                    };
+                                },
+                            }
+                        },
+                        title:{
+                            display: true,
+                            text: "Rank History",
+                            font: {
+                                size: 20
+                            }
+                        }
+                    },
+                    layout: {
+                        padding: 20
+                    },
+                    },
             });
         parent.appendChild(ctx);
         }
