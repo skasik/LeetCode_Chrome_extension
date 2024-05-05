@@ -19,7 +19,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 window.localStorage.getItem("leetcode_username"),
             rankHistory: prevRanks,
             rankDateHistory: prevRankDates,
-            success: window.location.href.includes("https://leetcode.com/")
+            success: window.location.href.includes("https://leetcode.com/u/")
         });
     }
 });
@@ -27,7 +27,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 function addRank(){
     var username = window.localStorage.getItem("leetcode_username");
-    if (window.location.href.includes("https://leetcode.com/" + username)) {
+    if (window.location.href.includes("https://leetcode.com/u/" + username)) {
         document.querySelectorAll("span").forEach((ele) => {
             if (ele.innerText == "Rank") {
                 let rank = ele.parentNode.children[1].innerText;
@@ -100,6 +100,8 @@ function toggleTimer(start=true){
             if (!window.localStorage.getItem(problemId+"_status")){
                 document.querySelector('#ide-top-btns > div > div > div > div:nth-child(1) > div > div:nth-child(4)').click(); //reset timer
                 window.localStorage.setItem(problemId+"_status", "NA");
+                timer = 0;
+                toggleSolutions(true);
             }
             if (window.location.href.includes('/submissions/') && document.querySelector('span[data-e2e-locator="submission-result"]').innerText.includes("Accepted")){
                 window.localStorage.setItem(problemId+"_status", "AC");
