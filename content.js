@@ -233,9 +233,114 @@ function hidePremium(){
     }
 }
 
+function trackQuestions(){
+    if (window.location.href.includes("leetcode.com/u/")){
+        var username = window.location.href.replace("https://leetcode.com/u/","").split("/")[0];
+        console.log("Tracking questions for ", username);
+
+        var questions;
+        if (window.localStorage.getItem(username+"_solvedquestions")) {
+            questions = JSON.parse(window.localStorage.getItem(username+"_solvedquestions"));
+        } else {
+            questions = {
+                prev: {
+                    solved: 0,
+                    easy: 0,
+                    medium: 0,
+                    hard: 0,
+                    time: ""
+                },
+                curr: {
+                    solved: 0,
+                    easy: 0,
+                    medium: 0,
+                    hard: 0,
+                    time: ""
+                }
+            };
+        }
+
+
+        var easyDiv = document.querySelector("div:nth-child(1) > div.text-sd-foreground.text-xs.font-medium");
+        var medDiv = document.querySelector("div:nth-child(2) > div.text-sd-foreground.text-xs.font-medium");
+        var hardDiv = document.querySelector("div:nth-child(3) > div.text-sd-foreground.text-xs.font-medium");
+
+
+        var easy = parseInt(easyDiv.innerHTML.split("/")[0]);
+        var medium = parseInt(medDiv.innerHTML.split("/")[0]);
+        var hard = parseInt(hardDiv.innerHTML.split("/")[0]);
+        var total = easy + medium + hard;
+
+        var date = new Date();
+        var today = date.getDate()+"_"+date.getMonth()+"_"+date.getFullYear();
+        if (questions.curr.solved != total || questions.curr.time != today){
+            if (questions.curr.time == today){
+                questions.curr.easy = easy;
+                questions.curr.medium = medium;
+                questions.curr.hard = hard;
+                questions.curr.solved = total;
+            }
+            else{
+                questions.prev = {
+                    solved: questions.curr.solved,
+                    easy: questions.curr.easy,
+                    medium: questions.curr.medium,
+                    hard: questions.curr.hard,
+                    time: questions.curr.time
+                };
+                questions.curr = {
+                    solved: total,
+                    easy: easy,
+                    medium: medium,
+                    hard: hard,
+                    time: today
+                };
+            }
+
+            window.localStorage.setItem(username+"_solvedquestions", JSON.stringify(questions));
+        }
+
+        easy = questions.curr.easy - questions.prev.easy;
+        medium = questions.curr.medium - questions.prev.medium;
+        hard = questions.curr.hard - questions.prev.hard;
+        var temp;
+        if (easy > 0){
+            temp = document.createElement('div');
+            temp.className = "text-xs font-medium text-sd-easy";
+            temp.innerText = "+" + easy;
+            temp.style.marginLeft = "10px";
+            easyDiv.appendChild(temp);
+            easyDiv.style.display = "flex";
+        }
+
+        if (medium > 0) {
+            temp = document.createElement('div');
+            temp.className = "text-xs font-medium text-sd-easy";
+            temp.innerText = "+" + medium;
+            temp.style.marginLeft = "10px";
+            medDiv.appendChild(temp);
+            medDiv.style.display = "flex";
+        }
+
+        if (hard > 0) {
+            temp = document.createElement('div');
+            temp.className = "text-xs font-medium text-sd-easy";
+            temp.innerText = "+" + hard;
+            temp.style.marginLeft = "10px";
+            hardDiv.appendChild(temp);
+            hardDiv.style.display = "flex";
+        }
+
+       
+
+
+    }
+}
+
 setTimeout(()=>{
     addRank();
     hidePremium();
+    trackQuestions();
 }, 5000);
 
 let timer = 0;
