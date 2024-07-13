@@ -210,12 +210,12 @@ function toggleTimer(start=true){
 function toggleSolutions(hide=true){
     if (window.location.href.includes("https://leetcode.com/problems/")){
         if (hide){
-            document.querySelector('div[data-layout-path="/ts0/tb1"]').style.display = "none";
-            document.querySelector('div[data-layout-path="/ts0/tb2"]').style.display = "none";
+            document.querySelector('#solutions_tab').parentNode.parentNode.style.display = "none";
+            document.querySelector('#editorial_tab').parentNode.parentNode.style.display = "none";
         }
         else{
-            document.querySelector('div[data-layout-path="/ts0/tb1"]').style.display = "";
-            document.querySelector('div[data-layout-path="/ts0/tb2"]').style.display = "";
+            document.querySelector('#solutions_tab').parentNode.parentNode.style.display = "";
+            document.querySelector('#editorial_tab').parentNode.parentNode.style.display = "";
         }
     }
 }
@@ -349,7 +349,7 @@ setInterval(()=>{
     toggleSolutions(true);
     if (document.hasFocus()){
         timer += 1;
-        if (timer >= 30*60){ //show solutions after 30 minutes
+        if (timer >= 20*60){ //show solutions after 30 minutes
             toggleSolutions(false);
         }
     }
