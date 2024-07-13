@@ -346,12 +346,12 @@ setTimeout(()=>{
 let timer = 0;
 setInterval(()=>{
     // console.log("-->", document.hasFocus())
-    toggleSolutions(true);
+    // toggleSolutions(true);
+    toggleTimer(document.hasFocus());
     if (document.hasFocus()){
         timer += 1;
         if (timer >= 20*60){ //show solutions after 30 minutes
             toggleSolutions(false);
         }
     }
-    toggleTimer(document.hasFocus());
 },1000);
