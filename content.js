@@ -220,9 +220,23 @@ function toggleSolutions(hide=true){
     }
 }
 
+function hidePremium(){
+    if (window.location.href.includes("leetcode.com/problemset/")){
+        try{
+            document.querySelectorAll('div.mx-2.flex.items-center > .text-brand-orange').forEach((e)=>{
+                e.parentNode.parentNode.style.display = "none";
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
+}
+
 setTimeout(()=>{
     addRank();
-}, 4000);
+    hidePremium();
+}, 5000);
 
 let timer = 0;
 setInterval(()=>{
