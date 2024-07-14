@@ -123,6 +123,11 @@ function displayChart(ranks,dates){
             }
             // console.log(xAxis, yAxis);
 
+            if (ranks.length <= 15){
+                yAxis = ranks;
+                xAxis = dates;
+            }
+
             let ctx = document.createElement("canvas");
             ctx.width = "800";
             ctx.height = "300";
