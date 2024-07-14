@@ -194,6 +194,10 @@ function toggleTimer(start=true){
                 start = false;
                 toggleSolutions(false);
             }
+            if (window.localStorage.getItem(problemId+"_status") == "NA"){
+                start = true;
+                toggleSolutions(true);
+            }
             if (start && status.includes("play")) {
                 document.querySelector('#ide-top-btns > div > div > div > div:nth-child(1) > div > div:nth-child(2) > div').click()
             }
@@ -212,10 +216,22 @@ function toggleSolutions(hide=true){
         if (hide){
             document.querySelector('#solutions_tab').parentNode.parentNode.style.display = "none";
             document.querySelector('#editorial_tab').parentNode.parentNode.style.display = "none";
+            document.querySelectorAll(".flexlayout__tab")[1].style.filter = "blur(10px)";
+            document.querySelectorAll(".flexlayout__tab")[2].style.filter = "blur(10px)";
+            //disable clicks
+            document.querySelectorAll(".flexlayout__tab")[1].style.pointerEvents = "none";
+            document.querySelectorAll(".flexlayout__tab")[2].style.pointerEvents = "none";
+
+
         }
         else{
             document.querySelector('#solutions_tab').parentNode.parentNode.style.display = "";
             document.querySelector('#editorial_tab').parentNode.parentNode.style.display = "";
+            document.querySelectorAll(".flexlayout__tab")[1].style.filter = "";
+            document.querySelectorAll(".flexlayout__tab")[2].style.filter = "";
+            //enable clicks
+            document.querySelectorAll(".flexlayout__tab")[1].style.pointerEvents = "";
+            document.querySelectorAll(".flexlayout__tab")[2].style.pointerEvents = "";
         }
     }
 }
