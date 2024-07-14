@@ -296,7 +296,7 @@ function trackQuestions(){
                 questions.curr.hard = hard;
                 questions.curr.solved = total;
             }
-            else{
+            else if (questions.curr.solved != total){
                 questions.prev = {
                     solved: questions.curr.solved,
                     easy: questions.curr.easy,
@@ -324,29 +324,45 @@ function trackQuestions(){
             temp = document.createElement('div');
             temp.className = "text-xs font-medium text-sd-easy";
             temp.innerText = "+" + easy;
-            temp.style.marginLeft = "10px";
+            temp.style.marginLeft = "5px";
             easyDiv.appendChild(temp);
             easyDiv.style.display = "flex";
         }
 
         if (medium > 0) {
             temp = document.createElement('div');
-            temp.className = "text-xs font-medium text-sd-easy";
+            temp.className = "text-xs font-medium text-sd-medium";
             temp.innerText = "+" + medium;
-            temp.style.marginLeft = "10px";
+            temp.style.marginLeft = "5px";
             medDiv.appendChild(temp);
             medDiv.style.display = "flex";
         }
 
         if (hard > 0) {
             temp = document.createElement('div');
-            temp.className = "text-xs font-medium text-sd-easy";
+            temp.className = "text-xs font-medium text-sd-hard";
             temp.innerText = "+" + hard;
-            temp.style.marginLeft = "10px";
+            temp.style.marginLeft = "5px";
             hardDiv.appendChild(temp);
             hardDiv.style.display = "flex";
         }
 
+        if (questions.curr.solved - questions.prev.solved > 0){
+            temp = document.createElement('div');
+            temp.className = "rounded-sd-sm flex w-full flex-1 flex-col items-center justify-center gap-0.5 shadow-[unset] bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.06)] text-xs font-medium text-sd-foreground";
+            temp.innerText = "Total: ";
+            var temp2 = document.createElement('div');
+            temp2.className = "text-xs font-medium text-sd-easy";
+            temp2.innerText = "+"+(questions.curr.solved - questions.prev.solved);
+            temp2.style.marginLeft = "5px";
+            temp2.style.color = "hsl(212.85deg 100% 37.84%)";
+            temp.appendChild(temp2);
+            temp.style.display = "flex";
+            temp.style.alignItems = "center";
+            temp.style.justifyContent = "center";
+            temp.style.flexDirection = "row";
+            hardDiv.parentNode.parentNode.appendChild(temp);
+        }
        
 
 
