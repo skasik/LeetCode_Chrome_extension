@@ -27,7 +27,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 function addRank(){
     var username = window.localStorage.getItem("leetcode_username");
-    if (window.location.href.includes("https://leetcode.com/u/" + username)) {
+    if (window.location.href.includes("https://leetcode.com/u/")) {
+        username = window.location.href.replace("https://leetcode.com/u/", "").split("/")[0];
         document.querySelectorAll("span").forEach((ele) => {
             if (ele.innerText == "Rank") {
                 let rank = ele.parentNode.children[1].innerText;
