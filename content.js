@@ -84,25 +84,14 @@ function addRank(){
 }
 
 function displayChart(ranks,dates){
+    let parent =  document.querySelector("div > div.mx-auto.w-full.grow > div > div.w-full");
     document.querySelectorAll("span").forEach(ele=>{
         if(ele.innerText.includes("submissions in the past one year")){
-            // let xAxis = [];
-            // let yAxis = [];
-            // //set xAxis to month names of last 12 months
-            // for (let i=11; i>=0; i--){
-            //     let today = new Date();
-            //     today.setMonth(today.getMonth()-i);
-            //     xAxis.push(today.toLocaleString('default', { month: 'short' }));
-            // }
-            
-            // //calculate yAxis values by averaging ranks of each month
-            // let j = 0;
-            // for (let t=0; t<12; ++t){
-            //     let mth = (new Date()).getMonth() - t;
+            parent = ele.parentNode.parentNode.parentNode.parentNode;
+        }
+    });
 
-
-            // }
-            let points = {};
+    let points = {};
             for (let i=0; i<12; ++i){ points[i] = {rank:9999999999, count:0};}
             for (let i=0; i<dates.length; ++i){
                 let date = new Date(dates[i].split("/").reverse().join("-"));
@@ -134,7 +123,6 @@ function displayChart(ranks,dates){
             }
             // console.log(xAxis, yAxis);
 
-            let parent = ele.parentNode.parentNode.parentNode.parentNode;
             let ctx = document.createElement("canvas");
             ctx.width = "800";
             ctx.height = "300";
@@ -197,8 +185,7 @@ function displayChart(ranks,dates){
                     },
             });
         parent.appendChild(ctx);
-        }
-    });
+
 }
 
 function toggleTimer(start=true){
@@ -400,6 +387,7 @@ setTimeout(()=>{
     addRank();
     hidePremium();
     trackQuestions();
+    showHiddenSolved();
 }, 5000);
 
 let timer = 0;
@@ -414,3 +402,68 @@ setInterval(()=>{
         }
     }
 },1000);
+
+
+function showHiddenSolved(){
+    if (window.location.href.includes("leetcode.com/u/")){
+        var username = window.location.href.replace("https://leetcode.com/u/","").split("/")[0];
+        var temp = document.createElement('div');
+        temp.className  = "flex flex-col";
+        
+        var text = `<div class="text-base font-bold leading-6 mt-5 mb-3 ml-2">Recent Submissions</div>`;
+
+        //post request
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://leetcode.com/graphql", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                console.log(response);
+                var submissions = response.data.recentSubmissionList;
+                console.log(submissions);
+                var tx = false;
+                submissions.forEach((submission)=>{
+                    tx = !tx;
+                    text += `<a class="flex h-[56px] items-center rounded px-4 ${tx?"bg-fill-4 dark:bg-dark-fill-4":""}"
+                    target="_blank"
+                    href="${submission.url}">
+                    <div data-title="${submission.title}" class="flex flex-1 justify-between">
+                    <span class="text-label-1 dark:text-dark-label-1 line-clamp-1 font-medium"
+                        >${submission.title} <span style="
+                        font-size: 0.8rem;
+                        font-weight: normal;
+                        background: ${submission.statusDisplay == "Accepted"? "#009214":"#ba0000"};
+                        border-radius: 50px;
+                        padding: .1rem 0.5rem;
+                        color: white;
+                        margin-left: 5px;">${submission.statusDisplay}</span>
+                        
+                        <span style="
+                        font-size: 0.8rem;
+                        font-weight: normal;
+                        background: grey;
+                        border-radius: 50px;
+                        padding: .1rem 0.5rem;
+                        color: white;
+                        margin-left: 5px;">${submission.lang}</span>
+                        
+                        </span><span
+                        class="text-label-3 dark:text-dark-label-3 lc-md:inline hidden whitespace-nowrap"
+                        >${submission.time} ago</span>
+                    </div></a>`;
+                });
+                temp.innerHTML = text;
+                document.querySelector("div > div.mx-auto.w-full.grow > div > div.w-full").appendChild(temp);
+
+            }
+        };
+        var data = JSON.stringify({
+            operationName: "recentSubmissions",
+            variables: {"username":username,"limit":200},
+            query: "\n    query recentSubmissions($username: String!, $limit: Int!) {\n  recentSubmissionList(username: $username, limit: $limit) {\n    id\n    title\n    titleSlug\n    timestamp\n    url\n   lang\n  time\n  status\n  statusDisplay\n}\n}\n    "
+        });
+        xhr.send(data);
+    }
+
+}
