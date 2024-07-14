@@ -36,6 +36,7 @@ function addRank(){
                 let prevRanks = JSON.parse(window.localStorage.getItem(username + "_ranks") || "[]");
                 let prevRankDates = JSON.parse(window.localStorage.getItem(username + "_rankdates") || "[]");
                 console.log("My Ranks: ", prevRanks)
+                
                 if (prevRanks.length === 0 || prevRanks[prevRanks.length - 1] != rank) {
                     prevRanks.push(rank);
 
@@ -46,6 +47,31 @@ function addRank(){
 
                     today = dd + '/' + mm + '/' + yyyy;
                     prevRankDates.push(today);
+                }
+
+                if (prevRanks.length >=2 && prevRanks[prevRanks.length-1] != prevRanks[prevRanks.length-2]){
+                    let rankDiff = prevRanks[prevRanks.length - 1] - prevRanks[prevRanks.length-2];
+
+                    let rankDiffTxt = Math.abs(rankDiff);
+                    if (rankDiffTxt >= 1000000){
+                        rankDiffTxt = rankDiffTxt/1000000;
+                        rankDiffTxt = rankDiffTxt.toFixed(1);
+                        rankDiffTxt = rankDiffTxt + "M";
+                    }
+                    else if (rankDiffTxt >= 1000){
+                        rankDiffTxt = rankDiffTxt/1000;
+                        rankDiffTxt = rankDiffTxt.toFixed(1);
+                        rankDiffTxt = rankDiffTxt + "K";
+                    }
+
+                    let rankDiffEle = document.createElement("span");
+                    rankDiffEle.innerText = (rankDiff > 0 ? "↑" : "↓") + rankDiffTxt ;
+                    rankDiffEle.style.color = rankDiff < 0 ? "green" : "red";
+                    rankDiffEle.style.fontSize = "0.8rem";
+                    rankDiffEle.style.fontWeight = "bold";
+                    rankDiffEle.style.marginLeft = "5px";
+                    ele.parentNode.appendChild(rankDiffEle);
+                    
                 }
                 window.localStorage.setItem(username + "_ranks", JSON.stringify(prevRanks));
                 window.localStorage.setItem(username + "_rankdates", JSON.stringify(prevRankDates));
@@ -76,12 +102,12 @@ function displayChart(ranks,dates){
 
             // }
             let points = {};
-            for (let i=0; i<12; ++i){ points[i] = {rank:0, count:0};}
+            for (let i=0; i<12; ++i){ points[i] = {rank:9999999999, count:0};}
             for (let i=0; i<dates.length; ++i){
                 let date = new Date(dates[i].split("/").reverse().join("-"));
                 let mth = date.getMonth();
-                points[mth].rank += ranks[i];
-                points[mth].count += 1;
+                points[mth].rank = Math.min(points[mth].rank, ranks[i]);
+                points[mth].count = 1;
             }
 
             let xAxis = [];
