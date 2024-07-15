@@ -415,7 +415,7 @@ function showHiddenSolved(){
         var temp = document.createElement('div');
         temp.className  = "flex flex-col";
         
-        var text = `<div class="text-base font-bold leading-6 mt-5 mb-3 ml-2">Recent Submissions</div>`;
+        var text = `<div class="text-base font-bold leading-6 mt-2 mb-3 ml-2">Recent Submissions</div>`;
 
         //post request
         var xhr = new XMLHttpRequest();
@@ -458,7 +458,7 @@ function showHiddenSolved(){
                         >${submission.time} ago</span>
                     </div></a>`;
                 });
-                temp.innerHTML = text;
+                temp.innerHTML = `<div class="bg-layer-1 dark:bg-dark-layer-1 shadow-down-01 dark:shadow-dark-down-01 rounded-lg px-4 pb-4 pt-4 mt-5">${text}</div>`;
                 document.querySelector("div > div.mx-auto.w-full.grow > div > div.w-full").appendChild(temp);
 
             }
